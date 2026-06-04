@@ -18,6 +18,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = /Users/tzerk/Documents/Firmeza/Firmeza.Web
 build_property._RazorSourceGeneratorDebug = 
 
+[/Users/tzerk/Documents/Firmeza/Firmeza.Web/Pages/AccesoDenegado.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWNjZXNvRGVuZWdhZG8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/tzerk/Documents/Firmeza/Firmeza.Web/Pages/Admin/Clientes.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWRtaW4vQ2xpZW50ZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -48,6 +52,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/Users/tzerk/Documents/Firmeza/Firmeza.Web/Pages/Admin/EditarProducto.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWRtaW4vRWRpdGFyUHJvZHVjdG8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/tzerk/Documents/Firmeza/Firmeza.Web/Pages/Admin/ImportarExcel.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWRtaW4vSW1wb3J0YXJFeGNlbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/tzerk/Documents/Firmeza/Firmeza.Web/Pages/Admin/Productos.cshtml]

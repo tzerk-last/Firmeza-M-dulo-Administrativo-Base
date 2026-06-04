@@ -1,0 +1,63 @@
+@page
+@model Firmeza.Web.Pages.Admin.ImportarExcelModel
+@{
+    ViewData["Title"] = "Importar / Exportar";
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<h4 class="fw-bold mb-4">Importar / Exportar datos</h4>
+
+<div class="row g-4">
+
+   
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 p-4">
+            <h5 class="fw-bold mb-3">📥 Importar desde Excel</h5>
+            <p class="text-muted small">El archivo debe tener estas columnas:<br/>
+                <code>Tipo | Nombre | Campo3 | Campo4 | Campo5</code><br/>
+                Tipos válidos: <strong>producto</strong> o <strong>cliente</strong>
+            </p>
+
+            @if (Model.Errores.Any())
+            {
+                <div class="alert alert-warning">
+                    <strong>Errores encontrados:</strong>
+                    <ul class="mb-0 mt-1">
+                        @foreach (var e in Model.Errores)
+                        {
+                            <li>@e</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            @if (Model.Mensaje != null)
+            {
+                <div class="alert alert-success">@Model.Mensaje</div>
+            }
+
+            <form method="post" enctype="multipart/form-data" asp-page-handler="Importar">
+                <div class="mb-3">
+                    <input type="file" name="archivo" accept=".xlsx" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-dark">Importar</button>
+            </form>
+        </div>
+    </div>
+
+  
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 p-4">
+            <h5 class="fw-bold mb-3"> Exportar a Excel</h5>
+            <div class="d-flex flex-column gap-2">
+                <a href="?handler=ExportarProductos" class="btn btn-outline-success">
+                     Exportar Productos
+                </a>
+                <a href="?handler=ExportarClientes" class="btn btn-outline-primary">
+                    ️ Exportar Clientes
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -26,6 +26,8 @@ builder.Services.ConfigureApplicationCookie(options => {
 });
 
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<Firmeza.Web.Services.PdfService>();
+builder.Services.AddScoped<Firmeza.Web.Services.ExcelService>(
 
 var app = builder.Build();
 
