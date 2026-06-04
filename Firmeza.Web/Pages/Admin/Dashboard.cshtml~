@@ -1,0 +1,30 @@
+@page
+@model Firmeza.Web.Pages.Admin.DashboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 rounded-3 p-4 text-center">
+            <i class="bi bi-box-seam fs-1 text-primary"></i>
+            <h2 class="fw-bold mt-2">@Model.TotalProductos</h2>
+            <p class="text-muted">Productos</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 rounded-3 p-4 text-center">
+            <i class="bi bi-people fs-1 text-success"></i>
+            <h2 class="fw-bold mt-2">@Model.TotalClientes</h2>
+            <p class="text-muted">Clientes</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 rounded-3 p-4 text-center">
+            <i class="bi bi-cart3 fs-1 text-warning"></i>
+            <h2 class="fw-bold mt-2">@Model.TotalVentas</h2>
+            <p class="text-muted">Ventas</p>
+        </div>
+    </div>
+</div>

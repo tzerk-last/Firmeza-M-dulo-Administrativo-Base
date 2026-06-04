@@ -1,0 +1,59 @@
+@page
+@model Firmeza.Web.Pages.Admin.ClientesModel
+@{
+    ViewData["Title"] = "Clientes";
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold">Lista de Clientes</h4>
+    <a href="/Admin/CrearCliente" class="btn btn-dark">+ Nuevo Cliente</a>
+</div>
+
+<div class="mb-3">
+    <form method="get">
+        <input type="text" name="buscar" value="@Model.Buscar"
+               class="form-control" placeholder="Buscar por nombre o documento..." style="max-width:300px;" />
+    </form>
+</div>
+
+@if (!Model.Clientes.Any())
+{
+    <div class="alert alert-info">No hay clientes registrados.</div>
+}
+else
+{
+    <div class="card shadow-sm border-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Documento</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model.Clientes)
+                {
+                    <tr>
+                        <td>@c.Id</td>
+                        <td>@c.Nombre</td>
+                        <td>@c.Documento</td>
+                        <td>@c.Correo</td>
+                        <td>@c.Telefono</td>
+                        <td>
+                            <a href="/Admin/EditarCliente/@c.Id" class="btn btn-sm btn-outline-primary">Editar</a>
+                            <form method="post" asp-page-handler="Eliminar" asp-route-id="@c.Id" style="display:inline">
+                                <button type="submit" class="btn btn-sm btn-outline-danger"
+                                        onclick="return confirm('¿Eliminar este cliente?')">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

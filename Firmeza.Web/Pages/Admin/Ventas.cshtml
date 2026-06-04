@@ -1,0 +1,50 @@
+@page
+@model Firmeza.Web.Pages.Admin.VentasModel
+@{
+    ViewData["Title"] = "Ventas";
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-bold">Lista de Ventas</h4>
+    <a href="/Admin/CrearVenta" class="btn btn-dark">+ Nueva Venta</a>
+</div>
+
+@if (!Model.Ventas.Any())
+{
+    <div class="alert alert-info">No hay ventas registradas.</div>
+}
+else
+{
+    <div class="card shadow-sm border-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var v in Model.Ventas)
+                {
+                    <tr>
+                        <td>@v.Id</td>
+                        <td>@v.Fecha.ToString("dd/MM/yyyy")</td>
+                        <td>@v.Cliente?.Nombre</td>
+                        <td>$@v.Detalles.Sum(d => d.Cantidad * d.PrecioUnitario).ToString("N2")</td>
+                        <td>
+                            <a href="/Admin/DetalleVenta/@v.Id" class="btn btn-sm btn-outline-primary">Ver detalle</a>
+                            <form method="post" asp-page-handler="Eliminar" asp-route-id="@v.Id" style="display:inline">
+                                <button type="submit" class="btn btn-sm btn-outline-danger"
+                                        onclick="return confirm('¿Eliminar esta venta?')">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

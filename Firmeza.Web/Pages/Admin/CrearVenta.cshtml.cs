@@ -1,0 +1,79 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using Firmeza.Web.Data;
+using Firmeza.Web.Models;
+
+namespace Firmeza.Web.Pages.Admin
+{
+    [Authorize(Roles = "Admin")]
+    public class CrearVentaModel : PageModel
+    {
+        private readonly ApplicationDbContext _context;
+        public CrearVentaModel(ApplicationDbContext context) => _context = context;
+
+        [BindProperty][Required] public int ClienteId { get; set; }
+        [BindProperty] public List<int> ProductoIds { get; set; } = new();
+        [BindProperty] public List<int> Cantidades { get; set; } = new();
+
+        public List<SelectListItem> ClientesSelect { get; set; } = new();
+        public List<SelectListItem> ProductosSelect { get; set; } = new();
+
+        public async Task OnGetAsync()
+        {
+            await CargarSelectsAsync();
+        }
+
+        public async Task<IActionResult> OnPostAsync()
+        {
+            try
+            {
+                await CargarSelectsAsync();
+                if (!ModelState.IsValid) return Page();
+
+                var venta = new Venta { ClienteId = ClienteId, Fecha = DateTime.Now, Detalles = new List<DetalleVenta>() };
+
+                for (int i = 0; i < ProductoIds.Count; i++)
+                {
+                    if (ProductoIds[i] == 0) continue;
+                    var producto = await _context.Productos.FindAsync(ProductoIds[i]);
+                    if (producto == null) continue;
+                    venta.Detalles.Add(new DetalleVenta
+                    {
+                        ProductoId = ProductoIds[i],
+                        Cantidad = Cantidades[i],
+                        PrecioUnitario = producto.Precio
+                    });
+                }
+
+                if (!venta.Detalles.Any())
+                {
+                    ModelState.AddModelError("", "Agrega al menos un producto.");
+                    return Page();
+                }
+
+                _context.Ventas.Add(venta);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("/Admin/Ventas");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Error: {ex.Message}");
+                return Page();
+            }
+        }
+
+        private async Task CargarSelectsAsync()
+        {
+            ClientesSelect = await _context.Clientes
+                .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Nombre })
+                .ToListAsync();
+            ProductosSelect = await _context.Productos
+                .Select(p => new SelectListItem { Value = p.Id.ToString(), Text = $"{p.Nombre} - ${p.Precio}" })
+                .ToListAsync();
+        }
+    }
+}

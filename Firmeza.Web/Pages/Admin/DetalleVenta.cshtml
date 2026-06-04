@@ -1,0 +1,36 @@
+@page "{id:int}"
+@model Firmeza.Web.Pages.Admin.DetalleVentaModel
+@{
+    ViewData["Title"] = "Detalle de Venta";
+    Layout = "/Pages/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card shadow-sm border-0 p-4" style="max-width:700px;">
+    <h5 class="fw-bold mb-4">Detalle de Venta #@Model.Venta?.Id</h5>
+    <p><strong>Cliente:</strong> @Model.Venta?.Cliente?.Nombre</p>
+    <p><strong>Fecha:</strong> @Model.Venta?.Fecha.ToString("dd/MM/yyyy HH:mm")</p>
+    <hr />
+    <table class="table">
+        <thead class="table-dark">
+            <tr><th>Producto</th><th>Cantidad</th><th>Precio Unit.</th><th>Subtotal</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var d in Model.Venta?.Detalles ?? new())
+            {
+                <tr>
+                    <td>@d.Producto?.Nombre</td>
+                    <td>@d.Cantidad</td>
+                    <td>$@d.PrecioUnitario.ToString("N2")</td>
+                    <td>$@((d.Cantidad * d.PrecioUnitario).ToString("N2"))</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr class="fw-bold">
+                <td colspan="3">Total</td>
+                <td>$@Model.Venta?.Detalles.Sum(d => d.Cantidad * d.PrecioUnitario).ToString("N2")</td>
+            </tr>
+        </tfoot>
+    </table>
+    <a href="/Admin/Ventas" class="btn btn-outline-secondary">Volver</a>
+</div>
