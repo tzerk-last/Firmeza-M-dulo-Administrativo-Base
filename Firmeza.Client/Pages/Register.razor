@@ -1,0 +1,74 @@
+@page "/register"
+@using Firmeza.Client.Models
+@using Firmeza.Client.Services
+@inject AuthService AuthService
+@inject NavigationManager Nav
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height:100vh">
+    <div class="card shadow-sm border-0 p-4" style="width:100%;max-width:420px">
+        <h4 class="fw-bold text-center mb-4">🏗️ Firmeza</h4>
+        <h6 class="text-muted text-center mb-4">Crear cuenta</h6>
+
+        @if (!string.IsNullOrEmpty(Error))
+        {
+            <div class="alert alert-danger">
+                <strong>Error al registrarse:</strong><br />
+                @Error
+            </div>
+        }
+
+        <div class="mb-3">
+            <label class="form-label">Nombre completo</label>
+            <input @bind="Request.NombreCompleto" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Correo</label>
+            <input @bind="Request.Email" type="email" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Contraseña</label>
+            <input @bind="Request.Password" type="password" class="form-control" />
+            <div class="form-text text-muted">
+                Mínimo 6 caracteres, una mayúscula y un número. Ej: <code>Firmeza1</code>
+            </div>
+        </div>
+        <button class="btn btn-dark w-100" @onclick="HandleRegister" disabled="@Cargando">
+            @if (Cargando) { <span>Registrando...</span> } else { <span>Registrarse</span> }
+        </button>
+        <hr />
+        <p class="text-center text-muted">¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
+    </div>
+</div>
+
+@code {
+    RegisterRequest Request = new();
+    string Error = string.Empty;
+    bool Cargando = false;
+
+    async Task HandleRegister()
+    {
+        Error = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(Request.NombreCompleto) ||
+            string.IsNullOrWhiteSpace(Request.Email) ||
+            string.IsNullOrWhiteSpace(Request.Password))
+        {
+            Error = "Todos los campos son obligatorios.";
+            return;
+        }
+
+        if (Request.Password.Length < 6)
+        {
+            Error = "La contraseña debe tener mínimo 6 caracteres, una mayúscula y un número.";
+            return;
+        }
+
+        Cargando = true;
+        var ok = await AuthService.RegisterAsync(Request);
+        if (ok)
+            Nav.NavigateTo("/productos");
+        else
+            Error = "No se pudo registrar. Verifica que la contraseña tenga mínimo 6 caracteres, una mayúscula y un número. Ej: Firmeza1";
+        Cargando = false;
+    }
+}

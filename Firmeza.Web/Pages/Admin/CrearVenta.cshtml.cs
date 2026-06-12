@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using Firmeza.Web.Data;
 using Firmeza.Web.Models;
+using Firmeza.Web.Services;
 
 namespace Firmeza.Web.Pages.Admin
 {
@@ -13,7 +14,13 @@ namespace Firmeza.Web.Pages.Admin
     public class CrearVentaModel : PageModel
     {
         private readonly ApplicationDbContext _context;
-        public CrearVentaModel(ApplicationDbContext context) => _context = context;
+        private readonly PdfService _pdfService;
+
+        public CrearVentaModel(ApplicationDbContext context, PdfService pdfService)
+        {
+            _context = context;
+            _pdfService = pdfService;
+        }
 
         [BindProperty][Required] public int ClienteId { get; set; }
         [BindProperty] public List<int> ProductoIds { get; set; } = new();
@@ -21,6 +28,7 @@ namespace Firmeza.Web.Pages.Admin
 
         public List<SelectListItem> ClientesSelect { get; set; } = new();
         public List<SelectListItem> ProductosSelect { get; set; } = new();
+        public string? ReciboUrl { get; set; }
 
         public async Task OnGetAsync()
         {
@@ -57,6 +65,17 @@ namespace Firmeza.Web.Pages.Admin
 
                 _context.Ventas.Add(venta);
                 await _context.SaveChangesAsync();
+
+                // Cargar relaciones para el PDF
+                await _context.Entry(venta).Reference(v => v.Cliente).LoadAsync();
+                foreach (var d in venta.Detalles)
+                    await _context.Entry(d).Reference(x => x.Producto).LoadAsync();
+
+                // Generar recibo PDF
+                var reciboUrl = _pdfService.GenerarRecibo(venta);
+                TempData["ReciboUrl"] = reciboUrl;
+                TempData["Mensaje"] = $"Venta #{venta.Id} registrada. Recibo generado.";
+
                 return RedirectToPage("/Admin/Ventas");
             }
             catch (Exception ex)

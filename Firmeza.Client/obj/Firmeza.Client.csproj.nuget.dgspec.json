@@ -1,0 +1,108 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/tzerk/Documents/Firmeza/Firmeza.Client/Firmeza.Client.csproj": {}
+  },
+  "projects": {
+    "/Users/tzerk/Documents/Firmeza/Firmeza.Client/Firmeza.Client.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/tzerk/Documents/Firmeza/Firmeza.Client/Firmeza.Client.csproj",
+        "projectName": "Firmeza.Client",
+        "projectPath": "/Users/tzerk/Documents/Firmeza/Firmeza.Client/Firmeza.Client.csproj",
+        "packagesPath": "/Users/tzerk/.nuget/packages/",
+        "outputPath": "/Users/tzerk/Documents/Firmeza/Firmeza.Client/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/tzerk/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Blazored.LocalStorage": {
+              "target": "Package",
+              "version": "[4.5.0, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly": {
+              "target": "Package",
+              "version": "[8.0.27, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly.Authentication": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.AspNetCore.Components.WebAssembly.DevServer": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.27, )"
+            },
+            "Microsoft.NET.ILLink.Tasks": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.27, )",
+              "autoReferenced": true
+            },
+            "Microsoft.NET.Sdk.WebAssembly.Pack": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.27, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
+              "version": "[8.0.27, 8.0.27]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/Users/tzerk/.dotnet/sdk/8.0.421/PortableRuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "browser-wasm": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

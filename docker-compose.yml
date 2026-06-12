@@ -1,28 +1,76 @@
 version: '3.8'
 
 services:
-  web:
-    build: .
-    ports:
-      - "8080:80"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=FirmezaDB;Username=postgres;Password=postgres123
-    depends_on:
-      - db
-    restart: on-failure
+
+  tests:
+    build:
+      context: .
+      dockerfile: Firmeza.Tests/Dockerfile
+    container_name: firmeza_tests
 
   db:
     image: postgres:16
+    container_name: firmeza_db
     environment:
       POSTGRES_DB: FirmezaDB
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres123
+      POSTGRES_USER: tzerk
+      POSTGRES_PASSWORD: ""
     ports:
       - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tzerk -d FirmezaDB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    depends_on:
+      tests:
+        condition: service_completed_successfully
+
+  api:
+    build:
+      context: .
+      dockerfile: Firmeza.API/Dockerfile
+    container_name: firmeza_api
+    ports:
+      - "5023:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=FirmezaDB;Username=tzerk;Password=
+      - Jwt__Key=FirmezaSuperSecretKey123456789012
+      - Jwt__Issuer=Firmeza.API
+      - Jwt__Audience=Firmeza.Client
+      - Email__From=kevinyuluo3@gmail.com
+      - Email__Password=exdpdldjgrclhsms
+      - ASPNETCORE_URLS=http://+:8080
+    depends_on:
+      db:
+        condition: service_healthy
+
+  admin:
+    build:
+      context: .
+      dockerfile: Firmeza.Web/Dockerfile
+    container_name: firmeza_admin
+    ports:
+      - "5062:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=FirmezaDB;Username=tzerk;Password=
+      - ASPNETCORE_URLS=http://+:8080
+    depends_on:
+      db:
+        condition: service_healthy
+
+  client:
+    build:
+      context: .
+      dockerfile: Firmeza.Client/Dockerfile
+    container_name: firmeza_client
+    ports:
+      - "5164:80"
+    depends_on:
+      api:
+        condition: service_started
 
 volumes:
   pgdata:

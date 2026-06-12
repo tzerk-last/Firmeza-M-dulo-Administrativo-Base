@@ -3,14 +3,15 @@
 @{
     ViewData["Title"] = "Ventas";
     Layout = "/Pages/Shared/_AdminLayout.cshtml";
-    var recibo = Request.Query["recibo"].ToString();
+    var recibo = TempData["ReciboUrl"]?.ToString();
+    var mensaje = TempData["Mensaje"]?.ToString();
 }
 
 @if (!string.IsNullOrEmpty(recibo))
 {
     <div class="alert alert-success d-flex align-items-center justify-content-between">
-        <span> Venta registrada exitosamente.</span>
-        <a href="@recibo" target="_blank" class="btn btn-sm btn-success"> Descargar Recibo PDF</a>
+        <span>✅ @mensaje</span>
+        <a href="@recibo" target="_blank" class="btn btn-sm btn-success">⬇ Descargar Recibo PDF</a>
     </div>
 }
 
@@ -46,6 +47,7 @@ else
                         <td>$@v.Detalles.Sum(d => d.Cantidad * d.PrecioUnitario).ToString("N2")</td>
                         <td>
                             <a href="/Admin/DetalleVenta/@v.Id" class="btn btn-sm btn-outline-primary">Ver detalle</a>
+                            <a href="/recibos/recibo_@(v.Id).pdf" target="_blank" class="btn btn-sm btn-outline-success">📄 Recibo</a>
                             <form method="post" asp-page-handler="Eliminar" asp-route-id="@v.Id" style="display:inline">
                                 <button type="submit" class="btn btn-sm btn-outline-danger"
                                         onclick="return confirm('¿Eliminar esta venta?')">Eliminar</button>

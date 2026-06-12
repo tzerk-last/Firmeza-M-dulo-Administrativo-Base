@@ -1,0 +1,77 @@
+@page "/productos"
+@using Firmeza.Client.Models
+@using Firmeza.Client.Services
+@inject ProductoService ProductoService
+@inject AuthService AuthService
+@inject NavigationManager Nav
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold">🏗️ Catálogo de Productos</h4>
+        <div>
+            <span class="text-muted me-3">👤 @NombreUsuario</span>
+            <a href="/carrito" class="btn btn-outline-dark me-2">🛒 Carrito (@ListaCarrito.Count)</a>
+            <button class="btn btn-outline-danger" @onclick="Logout">Salir</button>
+        </div>
+    </div>
+
+    @if (Cargando)
+    {
+        <div class="text-center"><div class="spinner-border"></div></div>
+    }
+    else
+    {
+        <div class="row g-3">
+            @foreach (var p in ListaProductos)
+            {
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body">
+                            <h6 class="fw-bold">@p.Nombre</h6>
+                            <p class="text-muted small">@p.Descripcion</p>
+                            <p class="fw-bold text-success">$@p.Precio.ToString("N2")</p>
+                            <p class="text-muted small">Stock: @p.Stock</p>
+                            <button class="btn btn-dark btn-sm w-100" @onclick="() => AgregarAlCarrito(p)">
+                                Agregar al carrito
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    List<ProductoModel> ListaProductos = new();
+    List<CarritoItem> ListaCarrito = new();
+    string NombreUsuario = string.Empty;
+    bool Cargando = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var autenticado = await AuthService.IsAuthenticatedAsync();
+        if (!autenticado) { Nav.NavigateTo("/login"); return; }
+
+        NombreUsuario = await AuthService.GetNombreAsync() ?? string.Empty;
+        ListaProductos = await ProductoService.GetProductosAsync();
+        Cargando = false;
+        ListaCarrito = CarritoEstado.Items;
+    }
+
+    void AgregarAlCarrito(ProductoModel producto)
+    {
+        var item = ListaCarrito.FirstOrDefault(c => c.Producto.Id == producto.Id);
+        if (item != null)
+            item.Cantidad++;
+        else
+            ListaCarrito.Add(new CarritoItem { Producto = producto, Cantidad = 1 });
+        CarritoEstado.Items = ListaCarrito;
+    }
+
+    async Task Logout()
+    {
+        await AuthService.LogoutAsync();
+        Nav.NavigateTo("/login");
+    }
+}

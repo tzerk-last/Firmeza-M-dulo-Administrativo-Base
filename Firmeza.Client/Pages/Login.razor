@@ -1,0 +1,49 @@
+@page "/login"
+@using Firmeza.Client.Models
+@using Firmeza.Client.Services
+@inject AuthService AuthService
+@inject NavigationManager Nav
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height:100vh">
+    <div class="card shadow-sm border-0 p-4" style="width:100%;max-width:420px">
+        <h4 class="fw-bold text-center mb-4">🏗️ Firmeza</h4>
+        <h6 class="text-muted text-center mb-4">Iniciar sesión</h6>
+
+        @if (!string.IsNullOrEmpty(Error))
+        {
+            <div class="alert alert-danger">@Error</div>
+        }
+
+        <div class="mb-3">
+            <label class="form-label">Correo</label>
+            <input @bind="Request.Email" type="email" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Contraseña</label>
+            <input @bind="Request.Password" type="password" class="form-control" />
+        </div>
+        <button class="btn btn-dark w-100" @onclick="HandleLogin" disabled="@Cargando">
+            @if (Cargando) { <span>Entrando...</span> } else { <span>Ingresar</span> }
+        </button>
+        <hr />
+        <p class="text-center text-muted">¿No tienes cuenta? <a href="/register">Regístrate</a></p>
+    </div>
+</div>
+
+@code {
+    LoginRequest Request = new();
+    string Error = string.Empty;
+    bool Cargando = false;
+
+    async Task HandleLogin()
+    {
+        Cargando = true;
+        Error = string.Empty;
+        var ok = await AuthService.LoginAsync(Request);
+        if (ok)
+            Nav.NavigateTo("/productos");
+        else
+            Error = "Correo o contraseña incorrectos.";
+        Cargando = false;
+    }
+}

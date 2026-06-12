@@ -3,6 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Firmeza.Tests", "Firmeza.Tests\Firmeza.Tests.csproj", "{029C9C7D-FAA2-444D-9C87-0265CF1D17F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Firmeza.API", "Firmeza.API\Firmeza.API.csproj", "{7FCED394-A87D-406D-947F-BBD1AA70625D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Firmeza.Client", "Firmeza.Client\Firmeza.Client.csproj", "{7DD682F4-F9D5-436E-B2C4-71F8954896CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -10,5 +16,19 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{029C9C7D-FAA2-444D-9C87-0265CF1D17F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{029C9C7D-FAA2-444D-9C87-0265CF1D17F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{029C9C7D-FAA2-444D-9C87-0265CF1D17F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{029C9C7D-FAA2-444D-9C87-0265CF1D17F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FCED394-A87D-406D-947F-BBD1AA70625D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FCED394-A87D-406D-947F-BBD1AA70625D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FCED394-A87D-406D-947F-BBD1AA70625D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FCED394-A87D-406D-947F-BBD1AA70625D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DD682F4-F9D5-436E-B2C4-71F8954896CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DD682F4-F9D5-436E-B2C4-71F8954896CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DD682F4-F9D5-436E-B2C4-71F8954896CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DD682F4-F9D5-436E-B2C4-71F8954896CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
